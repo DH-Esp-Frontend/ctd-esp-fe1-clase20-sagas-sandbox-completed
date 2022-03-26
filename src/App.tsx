@@ -1,30 +1,26 @@
-import React, {useEffect, useState} from 'react';
 import './App.css';
 import Buscador from './componentes/Buscador';
 import Grilla from "./componentes/Grilla";
-import {buscarPersonajes} from "./services/personaje.services";
-import Personaje from "./types/personaje.types";
+import {store} from "./store/store";
+import {Provider} from "react-redux";
+import {QueryClient, QueryClientProvider} from "react-query";
 
 function App() {
-
-  const [buscador, setBuscador] = useState<string>("");
-  const [personajes, setPersonajes] = useState<Personaje[]>([]);
-
-  useEffect(() => {
-      buscarPersonajes(buscador).then((data: Personaje[]) => {
-          setPersonajes(data);
-      });
-  }, [buscador])
+    const client = new QueryClient();
 
   return (
-    <div className="App">
-      <div className="App-body">
-          <h1>Rick and Morty</h1>
-          <h2>Buscador de Personajes</h2>
-          <Buscador buscador={buscador} setBuscador={setBuscador}/>
-          <Grilla personajes={personajes}/>
-      </div>
-    </div>
+      <QueryClientProvider client={client}>
+          <Provider store={store}>
+                <div className="App">
+                  <div className="App-body">
+                      <h1>Rick and Morty</h1>
+                      <h2>Buscador de Personajes</h2>
+                      <Buscador />
+                      <Grilla/>
+                  </div>
+                </div>
+          </Provider>
+      </QueryClientProvider>
   );
 }
 
