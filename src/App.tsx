@@ -10,7 +10,7 @@ function App() {
       <Provider store={store}>
             <div className="App">
               <div className="App-body">
-                  <h1>Rick and Morty</h1>
+                  <h1>Rick and Morty con Thunk</h1>
                   <h2>Buscador de Personajes</h2>
                   <Buscador />
                   <Grilla/>
