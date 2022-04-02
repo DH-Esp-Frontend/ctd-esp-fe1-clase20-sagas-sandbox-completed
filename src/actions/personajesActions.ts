@@ -38,8 +38,3 @@ export const buscarPersonajesError:ActionCreator<BuscarPersonajesErrorAction> = 
         error: error
     }
 }
-
-
-
-
-
