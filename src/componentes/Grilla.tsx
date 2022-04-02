@@ -1,6 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
-import Personaje from "../types/personaje.types";
-import {buscarPersonajesAPI} from "../services/personaje.services";
+import React, {FC} from "react";
 import {TypedUseSelectorHook, useSelector as useReduxSelector} from "react-redux";
 import {IRootState} from "../store/store";
 
@@ -8,14 +6,9 @@ export const useSelector: TypedUseSelectorHook<IRootState> = useReduxSelector
 
 const Grilla:FC = () => {
 
-    const buscador = useSelector(state => state.personajes.busqueda)
-    const [personajes, setPersonajes] = useState<Personaje[]>([]);
-    useEffect(() => {
-        buscarPersonajesAPI(buscador).then((data: Personaje[]) => {
-            setPersonajes(data);
-        })
-    },[buscador])
-
+    const {personajes, status} = useSelector(state => state.personajes)
+   
+    if (status === "CARGANDO") return <div>Cargando personajes...</div>
     if (!personajes || personajes.length === 0) return <></>
 
     return <div className="App-table" style={{marginTop: 50}}>

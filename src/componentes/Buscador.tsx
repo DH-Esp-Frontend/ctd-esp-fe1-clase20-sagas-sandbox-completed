@@ -1,16 +1,28 @@
 import React, {FC} from "react";
 import {useDispatch} from "react-redux";
-import {buscarPersonajes} from "../actions/personajesActions";
+import {buscarPersonajesAPI} from "../services/personaje.services";
+import {buscarPersonajes, buscarPersonajesError, buscarPersonajesExito} from "../actions/personajesActions";
+
+const MINIMUM_CHARS_TO_SEARCH = 3;
 
 const Buscador:FC = () => {
 
-    // No olvidemos agregar el hook de redux para obtener el acceso al objeto dispatch
     const dispatch = useDispatch();
+    const onChange = async (text: string): Promise<void> => {
+        if (text.length < MINIMUM_CHARS_TO_SEARCH) return;
+        dispatch(buscarPersonajes(text));
+        try{
+            const personajes = await buscarPersonajesAPI(text);
+            dispatch(buscarPersonajesExito(personajes));
+        }catch(e){
+            dispatch(buscarPersonajesError(e));
+        }
+    }
 
     return <div className="App-table">
         <div>
             <label>Buscar por Nombre: </label>
-            <input type="text" onChange={(e)=>  dispatch(buscarPersonajes(e.target.value))}
+            <input type="text" onChange={(e)=>  onChange(e.target.value)}
                    placeholder="Rick, Morty, etc" autoFocus={true}/>
         </div>
     </div>
