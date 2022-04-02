@@ -1,7 +1,6 @@
 import React, {FC} from "react";
 import {useDispatch} from "react-redux";
-import {buscarPersonajesAPI} from "../services/personaje.services";
-import {buscarPersonajes, buscarPersonajesError, buscarPersonajesExito} from "../actions/personajesActions";
+import {buscarPersonajes} from "../actions/personajesActions";
 
 const MINIMUM_CHARS_TO_SEARCH = 3;
 
@@ -11,12 +10,6 @@ const Buscador:FC = () => {
     const onChange = async (text: string): Promise<void> => {
         if (text.length < MINIMUM_CHARS_TO_SEARCH) return;
         dispatch(buscarPersonajes(text));
-        try{
-            const personajes = await buscarPersonajesAPI(text);
-            dispatch(buscarPersonajesExito(personajes));
-        }catch(e){
-            dispatch(buscarPersonajesError(e));
-        }
     }
 
     return <div className="App-table">
